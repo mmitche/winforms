@@ -154,6 +154,15 @@ namespace System.Windows.Forms.Design
 namespace System.ComponentModel.Design
 {
     [System.CLSCompliantAttribute(false)]
+    public partial class ArrayEditor : CollectionEditor
+    {
+        public ArrayEditor(Type type) : base(type) { }
+        protected override Type CreateCollectionItemType() { throw null; }
+        protected override object[] GetItems(object editValue) { throw null; }
+        protected override object SetItems(object editValue, object[] value) { throw null; }
+    }
+
+    [System.CLSCompliantAttribute(false)]
     public partial class CollectionEditor : System.Drawing.Design.UITypeEditor
     {
         public CollectionEditor() { }
