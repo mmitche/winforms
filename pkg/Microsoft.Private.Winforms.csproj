@@ -15,20 +15,29 @@
   -->
 
   <PropertyGroup>
+    <TargetFrameworkName>netcoreapp</TargetFrameworkName>
+    <TargetFrameworkVersion>3.0</TargetFrameworkVersion>
+    <TargetFramework>$(TargetFrameworkName)$(TargetFrameworkVersion)</TargetFramework>
+  </PropertyGroup>
 
+  <!-- This is a Packaging Project -->
+  <PropertyGroup>
+      <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- Don't build this project -->
-    <!-- Todo: this doesn't seem to work, find another way to prevent build outputs -->
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <IncludeSymbols>false</IncludeSymbols>
-
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <IsPackable>true</IsPackable>
+    <!-- Suppress NU5125 warnings -->
     <NoWarn>$(NoWarn);NU5125</NoWarn>
+  </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- Do not include Symbols -->
+    <IncludeSymbols>false</IncludeSymbols>
     <!-- Disable a VS-specific target that is failing when building this csproj -->
     <GenerateDependencyFile>false</GenerateDependencyFile>
-
   </PropertyGroup>
 
   <!-- nuspec properties -->
