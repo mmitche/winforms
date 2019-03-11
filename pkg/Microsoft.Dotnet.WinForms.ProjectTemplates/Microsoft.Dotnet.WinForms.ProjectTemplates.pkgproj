@@ -23,8 +23,6 @@
       <SkipPackageFileCheck>true</SkipPackageFileCheck>
     </File>
   </ItemGroup>
-
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
   
   <!-- don't validate this package as it doesn't actually represent a framework -->
   <Target Name="ValidateFrameworkPackage" />
