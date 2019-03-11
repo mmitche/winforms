@@ -5,47 +5,56 @@
 namespace System.ComponentModel.Design {
     using System;
     using System.Collections;
-      
-    // <include file='doc\DesignerActionItemCollection.uex' path='docs/doc[@for="DesignerActionItemCollection"]/*' />
-    /// <devdoc>
-    ///     [tbd]
-    /// </devdoc>
+
+    /// <summary>
+    /// To be provided.
+    /// </summary>
     public class DesignerActionItemCollection : CollectionBase
     {
-        public DesignerActionItemCollection()    {
+        public DesignerActionItemCollection()
+        {
         }
 
-        public DesignerActionItem this[int index]  {
-            get {
+        public DesignerActionItem this[int index]
+        {
+            get
+            {
                 return (DesignerActionItem)(List[index]);
             }
-            set {
+            set
+            {
                 List[index] = value;
             }
         }
 
-        public int Add(DesignerActionItem value)   {
+        public int Add(DesignerActionItem value)
+        {
             int index = List.Add(value);
             return index;
         }
 
-        public bool Contains(DesignerActionItem value)   {
+        public bool Contains(DesignerActionItem value)
+        {
             return List.Contains(value);
         }
 
-        public void CopyTo(DesignerActionItem[] array, int index)    {
+        public void CopyTo(DesignerActionItem[] array, int index)
+        {
             List.CopyTo(array, index);
         }
 
-        public int IndexOf(DesignerActionItem value)   {
+        public int IndexOf(DesignerActionItem value)
+        {
             return List.IndexOf(value);
         }
 
-        public void Insert(int index, DesignerActionItem value)   {
+        public void Insert(int index, DesignerActionItem value)
+        {
             List.Insert(index, value);
         }
 
-        public void Remove(DesignerActionItem value)     {
+        public void Remove(DesignerActionItem value)
+        {
             List.Remove(value);
         }
     }

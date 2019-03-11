@@ -8,19 +8,15 @@ using System.ComponentModel;
 
 namespace System.ComponentModel.Design
 {
-
-
-    /// <include file='doc\DesginerCommandSet.uex' path='docs/doc[@for="DesginerCommandSet"]/*' />
-    /// <devdoc>
-    ///     [to be provided]
-    /// </devdoc>
+    /// <summary>
+    /// To be provided.
+    /// </summary>
     public class DesignerCommandSet
     {
 
-        /// <include file='doc\DesginerCommandSet.uex' path='docs/doc[@for="GetCommands"]/*' />
-        /// <devdoc>
-        ///     [to be provided]
-        /// </devdoc>
+        /// <summary>
+        /// To be provided.
+        /// </summary>
         public virtual ICollection GetCommands(string name)
         {
             return null;
@@ -39,29 +35,15 @@ namespace System.ComponentModel.Design
                 }
                 */
 
-        /// <include file='doc\DesginerCommandSet.uex' path='docs/doc[@for="Verbs"]/*' />
-        /// <devdoc>
-        ///     [to be provided]
-        /// </devdoc>
-        public DesignerVerbCollection Verbs
-        {
-            get
-            {
-                return (DesignerVerbCollection)GetCommands("Verbs");
-            }
-        }
+        /// <summary>
+        /// To be provided.
+        /// </summary>
+        public DesignerVerbCollection Verbs => (DesignerVerbCollection)GetCommands("Verbs");
 
-        /// <include file='doc\DesginerCommandSet.uex' path='docs/doc[@for="Actions"]/*' />
-        /// <devdoc>
-        ///     [to be provided]
-        /// </devdoc>
-        public DesignerActionListCollection ActionLists
-        {
-            get
-            {
-                return (DesignerActionListCollection)GetCommands("ActionLists");
-            }
-        }
+        /// <summary>
+        /// To be provided.
+        /// </summary>
+        public DesignerActionListCollection ActionLists => (DesignerActionListCollection)GetCommands("ActionLists");
     }
 }
 

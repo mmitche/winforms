@@ -22,10 +22,7 @@ namespace System.ComponentModel.Design
         /// <summary>
         /// Gets or sets the data type this collection contains.
         /// </summary>
-        protected override Type CreateCollectionItemType()
-        {
-            return CollectionType.GetElementType();
-        }
+        protected override Type CreateCollectionItemType() => CollectionType.GetElementType();
 
         /// <summary>
         /// Gets the items in the array.

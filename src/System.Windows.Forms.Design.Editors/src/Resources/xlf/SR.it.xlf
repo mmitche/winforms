@@ -82,6 +82,11 @@
         <target state="translated">Sistema</target>
         <note />
       </trans-unit>
+      <trans-unit id="DesignerActionPanel_CouldNotFindMethod">
+        <source>Could not find method '{0}'</source>
+        <target state="new">Could not find method '{0}'</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DockEditorAccName">
         <source>Dock Picker</source>
         <target state="translated">Selettore ancoraggio</target>
