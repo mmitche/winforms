@@ -99,7 +99,7 @@
   <!-- Set package paths for project reference outputs -->
   <Target Name="SetPackagePath" DependsOnTargets="ResolveReferences">
   
-    <!-- Create booleans for Refs and Facades to use in settting package paths and packaging pdbs -->
+    <!-- Create booleans for Refs and Facades to use in setting package paths and packaging pdbs -->
     <ItemGroup>
       <TfmSpecificPackageFile>
         <IsReference>$([System.String]::Copy('%(TfmSpecificPackageFile.OriginalItemSpec)').EndsWith('Ref.csproj'))</IsReference>
@@ -134,7 +134,6 @@
     </PropertyGroup>
     
     <ItemGroup>
-
       <!-- Get pdbs, but not for neither reference binaries nor facade binaries -->
       <TfmSpecificPackageFile Include="$(_baseDirectory)$(_baseFileName).pdb" 
                               Condition="Exists('$(_baseDirectory)$(_baseFileName).pdb') And !$(_isReferenceAssembly) And !$(_isFacadeAssembly)">
@@ -151,7 +150,6 @@
       <TfmSpecificPackageFile Include="$(_baseDirectory)**\$(_baseFileName).resources.dll">
         <PackagePath>$(_packagePath)%(RecursiveDir)</PackagePath>
       </TfmSpecificPackageFile>
-
     </ItemGroup>
   </Target>
 
