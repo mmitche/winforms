@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+<Project Sdk="Microsoft.Build.NoTargets" InitialTargets="BuildPackage">
   <PropertyGroup>
     <TargetFrameworkName>netcoreapp</TargetFrameworkName>
     <TargetFrameworkVersion>3.0</TargetFrameworkVersion>
@@ -45,5 +43,13 @@
       <SkipPackageFileCheck>true</SkipPackageFileCheck>
     </File>
   </ItemGroup>
+
+  <!-- Force the output item type for all project references to "TfmSpecificPackageFile", which makes them get packed -->
+  <Target Name="BuildPackage">
+    <ItemGroup>
+      <ProjectReference>
+      </ProjectReference>
+    </ItemGroup>
+  </Target>
 
 </Project>
