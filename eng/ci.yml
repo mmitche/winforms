@@ -116,9 +116,9 @@ jobs:
       - checkout: self
         clean: true
 
-      # Set VSO Variable(s)
-      - powershell: eng\pre-build.ps1
-        displayName: Pre-Build - Set VSO Variables
+      # # Set VSO Variable(s)
+      # - powershell: eng\pre-build.ps1
+      #   displayName: Pre-Build - Set VSO Variables
 
       # Build and rename binlog
       - script: eng\cibuild.cmd
