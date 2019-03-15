@@ -140,6 +140,9 @@ jobs:
         displayName: Run Unit Tests on Build Machine (Debug only)
         condition: and(succeeded(), eq(variables['_BuildConfig'], 'Debug')) # on build machine (with test signing)
 
+      - script: eng\set.cmd
+        displayName: SET
+
       - template: /eng/ci-helix-test.yml
         parameters:
           HelixSource: $(_HelixSource)
