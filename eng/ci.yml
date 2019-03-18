@@ -109,8 +109,10 @@ jobs:
             _PublishType: none
             _SignType: test
             _DotNetPublishToBlobFeed : false
+            _Coverage: true
           Build_Release:
             _BuildConfig: Release
+            _Coverage: false
 
       steps:
       - checkout: self
@@ -121,38 +123,50 @@ jobs:
       #   displayName: Pre-Build - Set VSO Variables
 
       # Build and rename binlog
+      # Note: The /p:Coverage argument is passed here since some build properties change to accommodate running with
+      #       coverage. This is part of the workarounds for https://github.com/tonerdo/coverlet/issues/362 and
+      #       https://github.com/tonerdo/coverlet/issues/363.
       - script: eng\cibuild.cmd
-          -prepareMachine
+          -restore
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
           -build
+          /p:Coverage=$(_Coverage)
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Build.binlog          
         displayName: Build
 
     # Run Unit Tests
         # this should no longer be necessary once Helix is ready to report back code coverage
+        # Tests are run with /m:1 to work around https://github.com/tonerdo/coverlet/issues/364
       - script: eng\cibuild.cmd
-          -prepareMachine
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
           -test
-          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Test.binlog #SendToHelix.binlog for helix version        
+          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Test.binlog
+          /p:Coverage=$(_Coverage)
+          /m:1
         displayName: Run Unit Tests on Build Machine (Debug only)
-        condition: and(succeeded(), eq(variables['_BuildConfig'], 'Debug')) # on build machine (with test signing)
+        condition: and(succeeded() ,  eq(variables['_BuildConfig'], 'Debug')) # on build machine (with test signing)
 
-      - script: eng\set.cmd
-        displayName: SET
-
-      - template: /eng/ci-helix-test.yml
-        parameters:
+      - powershell: eng\cibuild.cmd
+          -configuration $(_BuildConfig)
+          $(_OfficialBuildIdArgs) 
+          -test
+          -projects $(Build.SourcesDirectory)\eng\helixpublish.proj
+          /bl:$(Build.SourcesDirectory)\artifacts\log\$(_BuildConfig)\Helix.binlog
+        displayName: Run Unit Tests on Helix Machine (Release only)
+        env:
           HelixSource: $(_HelixSource)
           HelixType: 'tests/unit'
+          HelixBuild: $(Build.BuildNumber)
           HelixTargetQueues: $(_UnitTestHelixAgentPool)
-          HelixAccessToken: $(_HelixToken)            # only defined for internal CI
+          HelixAccessToken: $(_HelixToken)              # only defined for internal CI
           Creator: $(_HelixCreator)
-          XUnitProjects: '..\src\**\*.Tests.csproj'
-          DisplayNamePrefix: 'Send Unit Tests (Windows.10) to Helix (Release only)'
-          condition: and(succeeded(), eq(variables['_BuildConfig'], 'Release')) # on helix (with real signing on internal)
+          XUnitProjects: '..\src\**\*.Tests.csproj'     # the test projects blob
+          XUnitPublishTargetFramework: netcoreapp3.0
+          XUnitRuntimeTargetFramework: netcoreapp2.0
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        condition: and(succeeded() ,  eq(variables['_BuildConfig'], 'Release')) # on helix machine (with real signing)
       
       # Run integration tests and rename binlog
       # These are not ready to run on Helix because:
@@ -174,6 +188,15 @@ jobs:
           -publish $(_PublishArgs)
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\PackSignPublish.binlog
         displayName: Pack, Sign, and Publish
+
+      # Upload code coverage data
+      - script: $(Build.SourcesDirectory)/.dotnet/dotnet msbuild
+          eng/CodeCoverage.proj
+          /p:Configuration=$(_BuildConfig)
+          /p:CodeCovToken=$(CODECOV_TOKEN)
+          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\CodeCoverage.binlog
+        displayName: Upload coverage to codecov.io
+        condition: and(succeeded(), eq(variables._Coverage, 'true'))
 
       # Perform some internal-build-only tasks
       - ${{ if eq(parameters.runAsPublic, 'false') }}:
